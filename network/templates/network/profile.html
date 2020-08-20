@@ -1,0 +1,48 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div class="d-flex flex-column align-items-center">
+    
+    <div class="p-2 parent-box">
+
+        <h4>{{ user_data.user }}</h4>
+        following: {{ user_data.following }}
+        followers: {{ user_data.followers }}
+
+        {% if user != user_data.user %}
+            <form action="{% url 'follow' user_data.user.id %}" method="post">
+            {% csrf_token %}
+
+            {% if user_data.user in user.following.all %}
+                <input type="hidden" name="_method" value="DELETE">
+                <button class="btn btn-dark" type="submit">Unfollow!</button>
+            {% else %}
+                <input type="hidden" name="_method" value="PUT">
+                <button class="btn btn-dark" type="submit">Follow!</button>
+            {% endif %}
+            </form>
+        {% endif %}
+
+    </div>
+
+    {% for post in posts %}
+    <div class="p-2" data-post="{{ post.id }}">
+        <a type="button" href="{% url 'profile' post.user.id %}"><b class="user_profile">{{ post.user }}</b></a>
+        <small>{{ post.timestamp }}</small>
+        {% if request.user.id == post.user.id %}
+        <img type="button" class="edit"style="float:right;" src="https://image.flaticon.com/icons/png/512/84/84380.png" width="15">
+        {% endif %}
+        <p id="body">{{ post.body }}</p>
+        <b id="likes">{{ post.likeCount }} </b>
+        {% if request.user|likes:post.likes.all %}
+            <a type="button" class="like" data-like="{{ like.id }}">Unlike</a>
+        {% else %}
+            <a type="button" class="like" data-like="like">Like</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+
+    
+</div>
+{% endblock %}

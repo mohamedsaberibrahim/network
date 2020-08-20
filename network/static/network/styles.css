@@ -1,0 +1,42 @@
+.body {
+    padding: 1%;
+    text-align:center;
+    align-items: center;
+}
+
+.d-flex
+{
+  flex:auto auto auto;
+  flex-wrap:wrap;
+  border:1px rgb(92, 90, 187) solid;
+  text-align:center;
+  width:50%;
+  margin:auto;  /* and that, will result in a 10px gap */
+}
+
+.p-2{
+    padding:1%; /* this */
+    border-style: double;
+    border-width: 0.1px;
+    border-color: rgba(0,0,0,.3);
+    text-align: left;
+    width: 85%;
+    margin: 2%;
+}
+
+.parent-box{
+    text-align: center;
+}
+
+.right{
+    float: right;
+}
+
+
+.pagination{
+    padding: 0px;
+    padding-left: 0px;
+    padding-top: 2%;
+    text-align:center;
+    align-items: center;
+}

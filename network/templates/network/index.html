@@ -1,0 +1,58 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div class="d-flex flex-column align-items-center" id="posts-view">
+    
+    <div class="p-2">
+        <h4>New Post</h4>
+        <form id="post-form">
+            <textarea class="form-control" id="body" placeholder=""></textarea>
+            <input type="submit" value="Post" class="right btn btn-dark">
+        </form>
+    </div>
+    {% for post in posts %}
+    <div class="p-2" data-post="{{ post.id }}">
+        <a type="button" href="{% url 'profile' post.user.id %}"><b class="user_profile">{{ post.user }}</b></a>
+        <small>{{ post.timestamp }}</small>
+        {% if request.user.id == post.user.id %}
+        <img type="button" class="edit"style="float:right;" src="https://image.flaticon.com/icons/png/512/84/84380.png" width="15">
+        {% endif %}
+        <p id="body">{{ post.body }}</p>
+        <b id="likes">{{ post.likeCount }} </b>
+        {% if request.user|likes:post.likes.all %}
+            <a type="button" class="like" data-like="{{ like.id }}">Unlike</a>
+        {% else %}
+            <a type="button" class="like" data-like="like">Like</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+<nav>
+    <ul class="pagination justify-content-center">
+        {% if posts.has_previous %}
+            <li class="page-item">
+                <a class="page-link" type="button" href="?page={{ posts.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+        {% if posts.paginator.num_pages > 1%}
+            {% for value in posts.paginator.num_pages|get_range %}
+                {% if value == posts.number %}
+                    <li class="page-item active"><a class="page-link" type="button" href="?page={{value }}">{{value}}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" type="button" href="?page={{ value  }}">{{value}}</a></li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if posts.has_next %}
+            <li class="page-item">
+            <a class="page-link" type="button" href="?page={{ posts.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock %}
